@@ -12,7 +12,7 @@ var AppComponent = /** @class */ (function () {
     AppComponent = __decorate([
         Component({
             selector: 'the-shop',
-            template: "\n    <h1>AAA {{title}}!</h1>\n  ",
+            templateUrl: './app.component.html',
             styles: []
         })
     ], AppComponent);
