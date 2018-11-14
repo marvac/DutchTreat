@@ -12,4 +12,9 @@
     <PackageReference Include="OdeToCode.UseNodeModules" Version="1.0.6" />      
   </ItemGroup>
 
+
+  <ItemGroup>
+    <Folder Include="ClientApp\" />
+  </ItemGroup>
+
 </Project>
