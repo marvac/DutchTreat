@@ -6,19 +6,21 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ProductListComponent } from './shop/product-list.component';
 import { DataService } from './shared/data-service';
+import { CartComponent } from './shop/cart.component';
 
 
 @NgModule({
-  declarations: [
-      AppComponent,
-      ProductListComponent
-  ],
-  imports: [
-    BrowserModule,
-      AppRoutingModule,
-    HttpClientModule
-  ],
+    declarations: [
+        AppComponent,
+        ProductListComponent,
+        CartComponent
+    ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule
+    ],
     providers: [DataService],
-  bootstrap: [AppComponent]
+    bootstrap: [AppComponent]
 })
 export class AppModule { }
