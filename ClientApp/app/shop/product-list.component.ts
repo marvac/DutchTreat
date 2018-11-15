@@ -1,20 +1,22 @@
-﻿import { Component } from "@angular/core";
+﻿import { Component, OnInit } from "@angular/core";
+import { DataService } from "../shared/data-service";
 
 @Component({
     selector: 'product-list',
     templateUrl: './product-list.component.html'
 })
-export class ProductListComponent {
-    public products = [{
-        title: "Product A",
-        price: 13.99
-    },
-    {
-        title: "Product B",
-        price: 11.99
-    },
-    {
-        title: "Product C",
-        price: 19.99
-    },]
+export class ProductListComponent implements OnInit{
+    products
+
+    constructor(private dataService: DataService) {
+        this.products = dataService.products
+    }
+
+    ngOnInit() {
+        this.dataService.loadProducts().subscribe(success => {
+            if (success) {
+                this.products = this.dataService.products
+            }
+        })
+    }
 }

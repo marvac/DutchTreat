@@ -5,22 +5,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { ProductListComponent } from './shop/product-list.component';
+import { DataService } from './shared/data-service';
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
     AppModule = __decorate([
         NgModule({
             declarations: [
-                AppComponent
+                AppComponent,
+                ProductListComponent
             ],
             imports: [
                 BrowserModule,
-                AppRoutingModule
+                AppRoutingModule,
+                HttpClientModule
             ],
-            providers: [],
+            providers: [DataService],
             bootstrap: [AppComponent]
         })
     ], AppModule);
