@@ -11,7 +11,7 @@ export class ProductListComponent implements OnInit{
     products: Product[]
 
     constructor(private dataService: DataService) {
-        this.products = dataService.products
+        
     }
 
     ngOnInit() {
@@ -20,5 +20,9 @@ export class ProductListComponent implements OnInit{
                 this.products = this.dataService.products
             }
         })
+    }
+
+    addProduct(product: Product) {
+        this.dataService.addToOrder(product)
     }
 }

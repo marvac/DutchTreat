@@ -178,6 +178,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common/http */ "../node_modules/@angular/common/fesm5/http.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "../node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "../node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _order__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./order */ "./app/shared/order.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -190,10 +191,12 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
+
 var DataService = /** @class */ (function () {
     function DataService(http) {
         this.http = http;
         this.products = [];
+        this.order = new _order__WEBPACK_IMPORTED_MODULE_3__["Order"]();
     }
     DataService.prototype.loadProducts = function () {
         var _this = this;
@@ -202,11 +205,69 @@ var DataService = /** @class */ (function () {
             return true;
         }));
     };
+    DataService.prototype.addToOrder = function (product) {
+        var item = this.order.items.find(function (i) { return i.productId == product.id; });
+        if (item) {
+            item.quantity++;
+        }
+        else {
+            item = new _order__WEBPACK_IMPORTED_MODULE_3__["OrderItem"]();
+            item.productId = product.id;
+            item.productArtist = product.artist;
+            item.productCategory = product.category;
+            item.productArtId = product.artId;
+            item.productTitle = product.title;
+            item.productSize = product.size;
+            item.unitPrice = product.price;
+            item.quantity = 1;
+            this.order.items.push(item);
+        }
+    };
     DataService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])(),
         __metadata("design:paramtypes", [_angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClient"]])
     ], DataService);
     return DataService;
+}());
+
+
+
+/***/ }),
+
+/***/ "./app/shared/order.ts":
+/*!*****************************!*\
+  !*** ./app/shared/order.ts ***!
+  \*****************************/
+/*! exports provided: Order, OrderItem */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Order", function() { return Order; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "OrderItem", function() { return OrderItem; });
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ "../node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);
+
+var Order = /** @class */ (function () {
+    function Order() {
+        this.orderDate = new Date();
+        this.items = new Array();
+    }
+    Object.defineProperty(Order.prototype, "subtotal", {
+        get: function () {
+            return lodash__WEBPACK_IMPORTED_MODULE_0__["sum"](lodash__WEBPACK_IMPORTED_MODULE_0__["map"](this.items, function (i) { return i.unitPrice * i.quantity; }));
+        },
+        enumerable: true,
+        configurable: true
+    });
+    ;
+    return Order;
+}());
+
+var OrderItem = /** @class */ (function () {
+    function OrderItem() {
+    }
+    return OrderItem;
 }());
 
 
@@ -220,7 +281,7 @@ var DataService = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<h3>Shopping Cart</h3>\r\n<div>#/Items: {{ data.order.items.length }}</div>\r\n<div>Subtotal: {{ data.order.subtotal | currency:\"USD\":true  }}</div>\r\n<table class=\"table table-condensed table-hover\">\r\n    <thead>\r\n        <tr>\r\n            <td>Product</td>\r\n            <td>#</td>\r\n            <td>$</td>\r\n            <td>Total</td>\r\n        </tr>\r\n    </thead>\r\n    <tbody>\r\n        <tr *ngFor=\"let o of data.order.items\">\r\n            <td>{{ o.productCategory }} - {{ o.productTitle }}</td>\r\n            <td>{{ o.quantity }}</td>\r\n            <td>{{ o.unitPrice | currency:\"USD\":true }}</td>\r\n            <td>{{ (o.unitPrice * o.quantity) | currency:\"USD\":true }}</td>\r\n        </tr>\r\n    </tbody>\r\n</table>"
+module.exports = "<h3>Shopping Cart</h3>\r\n<div>#/Items: {{ dataService.order.items.length }}</div>\r\n<div>Subtotal: {{ dataService.order.subtotal | currency:\"USD\":true  }}</div>\r\n<table class=\"table table-condensed table-hover\">\r\n    <thead>\r\n        <tr>\r\n            <td>Product</td>\r\n            <td>#</td>\r\n            <td>$</td>\r\n            <td>Total</td>\r\n        </tr>\r\n    </thead>\r\n    <tbody>\r\n        <tr *ngFor=\"let o of dataService.order.items\">\r\n            <td>{{ o.productCategory }} - {{ o.productTitle }}</td>\r\n            <td>{{ o.quantity }}</td>\r\n            <td>{{ o.unitPrice | currency:\"USD\":true }}</td>\r\n            <td>{{ (o.unitPrice * o.quantity) | currency:\"USD\":true }}</td>\r\n        </tr>\r\n    </tbody>\r\n</table>"
 
 /***/ }),
 
@@ -284,7 +345,7 @@ module.exports = ".product-info img {\r\n    max-width: 100px;\r\n    float: lef
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n\r\n    <div class=\"product-info col-md-4\" *ngFor=\"let p of products\">\r\n        <div class=\"card bg-light p-1 m-1\">\r\n            <img src=\"/img/{{ p.artId }}.jpg\" class=\"img-fluid\" [alt]=\"p.title\" />\r\n            <h3>{{ p.category }} - {{ p.size }}</h3>\r\n            <ul class=\"product-props list-unstyled\">\r\n                <li><strong>Price</strong>: {{ p.price | currency:\"USD\":true }}</li>\r\n                <li><strong>Artist</strong>: {{ p.artist }}</li>\r\n                <li><strong>Title</strong>: {{ p.title }}</li>\r\n                <li><strong>Description</strong>: {{ p.artDescription }}</li>\r\n            </ul>\r\n            <button id=\"buyButton\" class=\"btn btn-success\">Buy</button>\r\n        </div>\r\n    </div>\r\n\r\n</div>"
+module.exports = "<div class=\"row\">\r\n\r\n    <div class=\"product-info col-md-4\" *ngFor=\"let p of products\">\r\n        <div class=\"card bg-light p-1 m-1\">\r\n            <img src=\"/img/{{ p.artId }}.jpg\" class=\"img-fluid\" [alt]=\"p.title\" />\r\n            <h3>{{ p.category }} - {{ p.size }}</h3>\r\n            <ul class=\"product-props list-unstyled\">\r\n                <li><strong>Price</strong>: {{ p.price | currency:\"USD\":true }}</li>\r\n                <li><strong>Artist</strong>: {{ p.artist }}</li>\r\n                <li><strong>Title</strong>: {{ p.title }}</li>\r\n                <li><strong>Description</strong>: {{ p.artDescription }}</li>\r\n            </ul>\r\n            <button id=\"buyButton\" class=\"btn btn-success\" (click)=\"addProduct(p)\">Buy</button>\r\n        </div>\r\n    </div>\r\n\r\n</div>"
 
 /***/ }),
 
@@ -314,7 +375,6 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 var ProductListComponent = /** @class */ (function () {
     function ProductListComponent(dataService) {
         this.dataService = dataService;
-        this.products = dataService.products;
     }
     ProductListComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -323,6 +383,9 @@ var ProductListComponent = /** @class */ (function () {
                 _this.products = _this.dataService.products;
             }
         });
+    };
+    ProductListComponent.prototype.addProduct = function (product) {
+        this.dataService.addToOrder(product);
     };
     ProductListComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({

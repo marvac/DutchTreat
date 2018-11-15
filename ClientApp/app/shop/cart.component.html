@@ -1,6 +1,6 @@
 ﻿<h3>Shopping Cart</h3>
-<div>#/Items: {{ data.order.items.length }}</div>
-<div>Subtotal: {{ data.order.subtotal | currency:"USD":true  }}</div>
+<div>#/Items: {{ dataService.order.items.length }}</div>
+<div>Subtotal: {{ dataService.order.subtotal | currency:"USD":true  }}</div>
 <table class="table table-condensed table-hover">
     <thead>
         <tr>
@@ -11,7 +11,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let o of data.order.items">
+        <tr *ngFor="let o of dataService.order.items">
             <td>{{ o.productCategory }} - {{ o.productTitle }}</td>
             <td>{{ o.quantity }}</td>
             <td>{{ o.unitPrice | currency:"USD":true }}</td>

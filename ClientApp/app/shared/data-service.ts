@@ -3,11 +3,13 @@ import { Injectable } from "@angular/core";
 import { map } from "rxjs/operators"
 import { Product } from "./product";
 import { Observable } from "rxjs";
+import { Order, OrderItem } from "./order";
 
 @Injectable()
 export class DataService {
 
     public products: Product[] = []
+    public order: Order = new Order()
 
     constructor(private http: HttpClient) {
 
@@ -18,5 +20,28 @@ export class DataService {
             this.products = data
             return true
         }))
+    }
+
+    public addToOrder(product: Product): void {
+        let item: OrderItem = this.order.items.find(i => i.productId == product.id);
+
+        if (item) {
+
+            item.quantity++;
+
+        } else {
+
+            item = new OrderItem();
+            item.productId = product.id;
+            item.productArtist = product.artist;
+            item.productCategory = product.category;
+            item.productArtId = product.artId;
+            item.productTitle = product.title;
+            item.productSize = product.size;
+            item.unitPrice = product.price;
+            item.quantity = 1;
+
+            this.order.items.push(item);
+        }
     }
 }
