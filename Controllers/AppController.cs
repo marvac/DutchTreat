@@ -49,7 +49,6 @@ namespace DutchTreat.Controllers
             return View();
         }
 
-        [Authorize]
         public IActionResult Shop()
         {
             //get the data directly from the API

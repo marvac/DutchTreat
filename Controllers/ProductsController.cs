@@ -27,7 +27,7 @@ namespace DutchTreat.Controllers
     {
       try
       {
-        return Ok(_repository.GetAllProducts());
+        return Ok(_repository.GetAllProducts().Take(30));
       }
       catch (Exception ex)
       {

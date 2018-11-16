@@ -1,6 +1,6 @@
 ﻿<h3>Shopping Cart</h3>
 <div>#/Items: {{ dataService.order.items.length }}</div>
-<div>Subtotal: {{ dataService.order.subtotal | currency:"USD":true  }}</div>
+<div>Subtotal: {{ dataService.order.subtotal | currency:"USD":symbol  }}</div>
 <table class="table table-condensed table-hover">
     <thead>
         <tr>
@@ -15,9 +15,9 @@
             <td>{{ o.productCategory }} - {{ o.productTitle }}</td>
             <td>{{ o.quantity }}</td>
             <td>{{ o.unitPrice | currency:"USD":true }}</td>
-            <td>{{ (o.unitPrice * o.quantity) | currency:"USD":true }}</td>
+            <td>{{ (o.unitPrice * o.quantity) | currency:"USD":symbol }}</td>
         </tr>
     </tbody>
 </table>
 
-<a routerLink="checkout" class="btn btn-success" *ngIf="dataService.order.items.length">Checkout</a>
+<button class="btn btn-success" *ngIf="dataService.order.items.length" (click)="onCheckout()">Checkout</button>

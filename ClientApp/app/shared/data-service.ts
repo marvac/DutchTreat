@@ -11,6 +11,14 @@ export class DataService {
     public products: Product[] = []
     public order: Order = new Order()
 
+    public get loginRequired(): boolean {
+        //basically if there is no token value or if it's expired already
+        return this.token.length == 0 || this.tokenExpiration > new Date()
+    }
+
+    private token: string = ""
+    private tokenExpiration: Date
+
     constructor(private http: HttpClient) {
 
     }
