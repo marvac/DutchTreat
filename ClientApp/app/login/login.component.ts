@@ -12,11 +12,22 @@ export class LoginComponent {
         password: ""
     }
 
+    errorMessage: string = ""
+
     constructor(private dataService: DataService, private router: Router) {
 
     }
 
     onLogin() {
-        
+        this.dataService.login(this.creds).subscribe(success => {
+            if (success) {
+                if (this.dataService.order.items.length == 0) {
+                    this.router.navigate([""])
+                }
+                else {
+                    this.router.navigate(["checkout"])
+                }
+            }
+        }, error => this.errorMessage = "Failed to login")
     }
 }

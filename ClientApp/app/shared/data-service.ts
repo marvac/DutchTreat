@@ -1,6 +1,6 @@
 ﻿import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { map } from "rxjs/operators"
+import { map } from "rxjs/operators";
 import { Product } from "./product";
 import { Observable } from "rxjs";
 import { Order, OrderItem } from "./order";
@@ -21,6 +21,16 @@ export class DataService {
 
     constructor(private http: HttpClient) {
 
+    }
+
+    login(creds): Observable<boolean> {
+        return this.http.post("/account/createtoken", creds)
+            .pipe(map((data: any) => {
+            this.token = data.token
+                this.tokenExpiration = data.expiration
+
+                return true
+        }))
     }
 
     loadProducts(): Observable<boolean> {
