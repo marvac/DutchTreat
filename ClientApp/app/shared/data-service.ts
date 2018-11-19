@@ -23,7 +23,7 @@ export class DataService {
 
     }
 
-    login(creds): Observable<boolean> {
+    public login(creds): Observable<boolean> {
         return this.http.post("/account/createtoken", creds)
             .pipe(map((data: any) => {
             this.token = data.token
@@ -33,7 +33,14 @@ export class DataService {
         }))
     }
 
-    loadProducts(): Observable<boolean> {
+    public checkout() {
+        return this.http.post('/api/orders', this.order).pipe(map((response: any) => {
+            this.order = new Order()
+            return true
+        }))
+    }
+
+    public loadProducts(): Observable<boolean> {
         return this.http.get("/api/products").pipe(map((data: any[]) => {
             this.products = data
             return true
