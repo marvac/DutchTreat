@@ -1,4 +1,4 @@
-﻿import { HttpClient } from "@angular/common/http";
+﻿import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { map } from "rxjs/operators";
 import { Product } from "./product";
@@ -34,7 +34,14 @@ export class DataService {
     }
 
     public checkout() {
-        return this.http.post('/api/orders', this.order).pipe(map((response: any) => {
+        if (!this.order.orderNumber) {
+            this.order.orderNumber = this.order.orderDate.getTime().toString()
+        }
+
+        return this.http.post('/api/orders', this.order, {
+            headers: new HttpHeaders().set("Authorization", `Bearer ${this.token}`)
+        })
+            .pipe(map((response: any) => {
             this.order = new Order()
             return true
         }))
